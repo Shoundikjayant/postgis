@@ -2,8 +2,9 @@
 
 
 
-### Demo
+### Demo with swagger
 12.0.0.1:8000/swagger/
+
 
 
 
