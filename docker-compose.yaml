@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  db:
+    image: postgis/postgis:latest
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    ports:
+      - "5432:5432"
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_DB_HOST: db
+      DJANGO_DB_PORT: 5432 # Corrected the port to 5432 for PostgreSQL
+      DJANGO_DB_NAME: mydatabase
+      DJANGO_DB_USER: myuser
+      DJANGO_DB_PASSWORD: mypassword
+      GDAL_LIBRARY_PATH: /usr/lib/libgdal.so
+      PROJ_LIB: /usr/share/proj
+      DJANGO_SETTINGS_MODULE: "myproject.settings"
+
+    depends_on:
+      - db
